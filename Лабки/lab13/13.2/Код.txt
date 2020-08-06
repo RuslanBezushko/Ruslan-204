@@ -1,0 +1,74 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	string rPath;
+	string wPath;
+	string text;
+	ifstream rFile;
+	ofstream wFile;
+	int i;
+	int j;
+
+	cout << "Enter file path" << endl;
+	getline(cin, rPath);
+	cout << "Enter result file path" << endl;
+	getline(cin, wPath);
+
+	rFile.open(rPath, ifstream::in);
+	if (!rFile.is_open())
+	{
+		cout << "Wrong file name" << endl;
+		return 1;
+	}
+
+	while (!rFile.eof())
+	{
+		string line;
+		getline(rFile, line);
+		text += line + "\n";
+	}
+	rFile.close();
+	cout << text << endl;
+	wFile.open(wPath, ofstream::out | ofstream::ate);
+	if (!wFile.is_open())
+	{
+		cout << "Can`t create file" << endl;
+		return 1;
+	}
+	int start = 0;
+	int len = 0;
+	int maxSize = 0;
+	for (j = 0; j <= text.length(); j++)
+	{
+		if (isalnum(text[j]) && j < text.length())
+			len++;
+		else
+		{
+			if (len > maxSize)
+				maxSize = len;
+			len = 0;
+		}
+	}
+	for (j = 0; j <= text.length(); j++)
+	{
+		if (isalnum(text[j]) && j < text.length())
+			len++;
+		else
+		{
+			if (len == maxSize)
+			{
+				text.erase(start, len);
+				j -= len;
+			}
+			len = 0;
+			start = j + 1;
+		}
+	}
+	wFile << text << endl;
+	return 0;
+}

@@ -1,0 +1,36 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	char pib[256];
+	cout << "Enter your last name, first name and patronymic: ";
+	cin.getline(pib, 256);
+	int i = 0;
+	int counter = 0;
+	while (i < 256 && pib[i] != '\0')
+	{
+		if (pib[i] == 'a' || pib[i] == 'A') counter++;
+		i++;
+	}
+	cout << "Numbers of 'A(a)': " << counter << endl;
+	bool flag = false;
+	i = 0;
+	counter = 0;
+	cout << "Your initials: ";
+	while (i < 256 && pib[i] != '\0')
+	{
+		if (flag && !isalpha(pib[i]))
+		{
+			flag = false;
+		}
+		else if (!flag && isalpha(pib[i]))
+		{
+			if (counter == 3) break;
+			cout << (char)toupper(pib[i]) << '.';
+			flag = true;
+			counter++;
+		}
+		i++;
+	}

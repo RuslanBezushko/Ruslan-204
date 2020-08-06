@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+#define COUNTRY_COUNT 28
+
+using namespace std;
+
+struct Country
+{
+	string name;
+	string capital;
+	unsigned int count;
+	unsigned int area;
+	double density_of_population;
+};
+
+int main()
+{
+	ifstream rFile;
+	ofstream wFile;
+	int i;
+	wFile.open("input.txt", ofstream::out | ofstream::ate);
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		string name;
+		string capital;
+		int count;
+		int area;
+		cout << "Enter country name:" << endl;
+		getline(cin, name);
+		cout << "Enter capital name:" << endl;
+		getline(cin, capital);
+		cout << "Enter count" << endl;
+		cin >> count;
+		cout << "Enter area size" << endl;
+		cin >> area;
+		getchar();
+		wFile << name << endl;
+		wFile << capital << endl;
+		wFile << to_string(count) << endl;
+		wFile << to_string(area) << endl;
+	}
+	wFile.close();
+	Country* countries = new Country[COUNTRY_COUNT];
+	double min = 0.0;
+	int index = 0;
+	rFile.open("input.txt", ofstream::in);
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		string name;
+		string capital;
+		string count;
+		string area;
+		rFile >> name;
+		rFile >> capital;
+		rFile >> count;
+		rFile >> area;
+		countries[i].name = name;
+		countries[i].capital = capital;
+		countries[i].count = stoi(count);
+		countries[i].area = stoi(area);
+		countries[i].density_of_population = (double)stoi(count) / (double)stoi(area);
+		if (countries[i].density_of_population < min)
+		{
+			min = countries[i].density_of_population;
+			index = i;
+		}
+	}
+	rFile.close();
+
+	wFile.open("output.txt", ofstream::out | ofstream::ate);
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		cout << countries[i].name << ' ' << countries[i].capital << ' ' << countries[i].count << ' ' << countries[i].area << ' ' << countries[i].density_of_population << endl;
+		wFile << countries[i].name << ' ' << countries[i].capital << ' ' << to_string(countries[i].count) << ' ' << to_string(countries[i].area) << ' ' << to_string(countries[i].density_of_population) << endl;
+	}
+	cout << endl;
+	cout << "Country with min density of population: " << countries[index].name << endl;
+	cout << endl;
+	cout << "'A'" << endl;
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		if (toupper(countries[i].capital[0]) == 'A')
+		{
+			cout << countries[i].name << endl;
+		}
+	}
+	wFile.close();
+}

@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int A[6][8];
+	int x;
+	cout << "Enter a 2D array: " << endl;
+
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 8; j++) {
+			cout << "Element " << i + 1 << "." << j + 1 << ": ";
+			cin >> x;
+			A[i][j] = x;
+		}
+		cout << endl;
+	}
+	
+	cout << "Your 2D array: " << endl;
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 8; j++) {
+			cout << A[i][j];
+			cout << "\t";
+		}
+		cout << endl;
+	}
+
+	int smaller = 9999999;
+	int index;
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (A[i][j] > 0 && A[i][j]%2 == 0 && smaller > A[i][j])
+			{
+				smaller = A[i][j];
+				index = j + 1;
+			}
+		}
+		if (smaller != 9999999)
+		{
+			cout << "The smallest even positive element of the row " << i + 1 << ": " << smaller << " .Index: " << index << endl;
+			smaller = 9999999;
+		}
+		else
+		{
+			cout << "Row " << i + 1 << "did not have such element" << endl;
+		}
+	}
+}

@@ -1,0 +1,51 @@
+#include <iostream>
+#include <time.h>
+
+#define K 6
+#define N 5
+
+using namespace std;
+
+int main()
+{
+	srand(time(nullptr));
+	int** a = new int* [K];
+	int* b = new int[K];
+	int i;
+	int j;
+	for (i = 0; i < K; i++)
+	{
+		a[i] = new int[N];
+	}
+	for (i = 0; i < K; i++)
+	{
+		b[i] = 0;
+		for (j = 0; j < N; j++)
+		{
+			int votes = rand() % (10 * 2 + 50);
+			a[i][j] = votes;
+			b[i] += votes;
+		}
+	}
+
+	for (i = 0; i < K; i++)
+	{
+		cout << "Settlement number: " << i + 1 << endl << "Number of voices: ";
+		for (j = 0; j < N; j++)
+		{
+			cout << a[i][j] << ' ';
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+	cout << "Settlements that have more than 100 voices: ";
+	for (i = 0; i < K; i++)
+	{
+		if (b[i] > 100)
+		{
+			cout << i + 1 << ' ';
+		}
+	}
+	cout << endl;
+}

@@ -1,0 +1,71 @@
+Додаток(а)
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	string rPath;
+	string wPath;
+	vector<string> strings;
+	ifstream rFile;
+	ofstream wFile;
+	int i;
+	int j;
+
+	cout << "Enter file path" << endl;
+	getline(cin, rPath);
+	cout << "Enter result file path" << endl;
+	getline(cin, wPath);
+
+	rFile.open(rPath, ifstream::in);
+	if (!rFile.is_open())
+	{
+		cout << "Wrong file name" << endl;
+		return 1;
+	}
+
+	while (!rFile.eof())
+	{
+		string line;
+		getline(rFile, line);
+		strings.push_back(line);
+	}
+	rFile.close();
+
+	wFile.open(wPath, ofstream::out | ofstream::ate);
+	if (!wFile.is_open())
+	{
+		cout << "Can`t create file" << endl;
+		return 1;
+	}
+	for (i = 0; i < strings.size(); i++)
+	{
+		int start = 0;
+		int len = 0;
+		int minSize = strings[i].length();
+		string temp;
+		for (j = 0; j <= strings[i].length(); j++)
+		{
+			if (isalnum(strings[i][j]) && j < strings[i].length())
+			{
+				len++;
+			}
+			else
+			{
+				if (len != 0 && len <= minSize)
+				{
+					minSize = len;
+					temp = string(strings[i].begin() + start, strings[i].begin() + start + len);
+				}
+				start = j + 1;
+				len = 0;
+			}
+		}
+		wFile << temp << endl;;
+	}
+	return 0;
+}

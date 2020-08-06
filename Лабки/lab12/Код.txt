@@ -1,0 +1,240 @@
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+
+template <typename T>
+class Node
+{
+public:
+	Node()
+	{
+
+	}
+	Node(const T& value)
+	{
+		m_value = new T(value);
+	}
+
+	~Node()
+	{
+		delete m_value;
+	}
+
+	void insert(const T& value, const unsigned int pos)
+	{
+		if (pos == 0)
+		{
+			Node<T>* node = new Node(*this);
+			m_value = new T(value);
+			m_next = node;
+		}
+		else if (m_next != nullptr)
+		{
+			m_next->insert(value, pos - 1);
+		}
+		else throw exception("Out of range");
+	}
+
+	void remove(const unsigned int pos)
+	{
+		if (pos == 1)
+		{
+			if (m_next != nullptr)
+			{
+				Node<T>* node = m_next;
+				m_next = node->m_next;
+				delete node;
+			}
+		}
+		else if (m_next != nullptr)
+		{
+			m_next->remove(pos - 1);
+		}
+	}
+
+	T& get(const unsigned int pos)
+	{
+		return *(getNode(pos)->m_value);
+	}
+
+	Node<T>* getNode(const unsigned int pos)
+	{
+		if (pos == 0)
+		{
+			return this;
+		}
+		else if (m_next != nullptr)
+		{
+			m_next->getNode(pos - 1);
+		}
+		else throw exception("Out of range");
+	}
+
+	void setNext(Node<T>* node) noexcept
+	{
+		m_next = node;
+	}
+
+	Node<T>* getNext() noexcept
+	{
+		return m_next;
+	}
+
+	void swap(Node<T>& node)
+	{
+		T* value = m_value;
+		m_value = node.m_value;
+		node.m_value = value;
+	}
+private:
+	T* m_value = nullptr;
+	Node<T>* m_next = nullptr;
+};
+
+template <typename T>
+class List
+{
+public:
+	List()
+	{
+		
+	}
+	List(const T& value)
+	{
+		m_front = new Node<T>(value);
+		m_back = m_front;
+	}
+
+	void push_front(const T& value)
+	{
+		Node<T>* node = new Node<T>(value);
+		if (m_front != nullptr)
+		{
+			node->setNext(m_front);
+		}
+		else
+		{
+			m_back = node;
+		}
+		m_front = node;
+		m_size++;
+	}
+	
+	void push_back(const T& value)
+	{
+		Node<T>* node = new Node<T>(value);
+		if (m_back != nullptr)
+		{
+			m_back->setNext(node);
+		}
+		else
+		{
+			m_front = node;
+		}
+		m_back = node;
+		m_size++;
+	}
+
+	void insert(const T& value, const unsigned int pos)
+	{
+		if (pos == m_size)
+		{
+			push_back(value);
+			return;
+		}
+		else if (pos > m_size)
+		{
+			throw exception("Out of range");
+		}
+		else m_front->insert(value, pos);
+		m_size++;
+	}
+
+	const unsigned int size()const noexcept
+	{
+		return m_size;
+	}
+
+	void remove(const unsigned int pos)
+	{
+		if (m_size < 1) return;
+		if (pos == 0)
+		{
+			if (m_size == 1)
+			{
+				delete m_front;
+				m_front = nullptr;
+				m_back = nullptr;
+			}
+			else
+			{
+				Node<T>* node = m_front->getNext();
+				delete m_front;
+				m_front = node;
+			}
+		}
+		m_front->remove(pos);
+		m_size--;
+	}
+
+	void swap(const unsigned int first, const unsigned int second)
+	{
+		Node<T>* node;
+		if (first < second)
+		{
+			node = m_front->getNode(first);
+			node->swap(*node->getNode(second - first));
+		}
+		else 
+		{
+			node = m_front->getNode(second);
+			node->swap(*node->getNode(first - second));
+		}
+	}
+
+	T& operator[] (const unsigned int index)
+	{
+		return m_front->get(index);
+	}
+
+private:
+	Node<T>* m_front = nullptr;
+	Node<T>* m_back = nullptr;
+	
+	unsigned int m_size = 0;
+};
+
+int main()
+{
+	srand(time(nullptr));
+	List<int> list;
+	list.push_back(rand() % 100);
+	list.push_back(rand() % 100);
+	list.push_back(rand() % 100);
+	int minValue = list[0];
+	int maxValue = minValue;
+	int maxValueIndex = 0;
+	int i;
+	for (i = 0; i < list.size(); i++)
+	{
+		cout << list[i] << ' ';
+	}
+	cout << endl;
+	for (i = 0; i < list.size(); i++)
+	{
+		if (list[i] > maxValue)
+		{
+			maxValue = list[i];
+			maxValueIndex = i;
+		}
+		if (list[i] < minValue)
+			minValue = list[i];
+	}
+	list.insert(minValue, maxValueIndex + 1);
+	list.swap(0, list.size() - 1);
+	for (i = 0; i < list.size(); i++)
+	{
+		cout << list[i] << ' ';
+	}
+}

@@ -1,0 +1,47 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	cout << "Enter size of NxN array: ";
+	int size;
+	cin >> size;
+	int** A = new int* [size];
+	for (int i = 0; i < size; i++) {
+		A[i] = new int[size];
+	}
+
+	int x;
+	cout << "Enter a 2D array: " << endl;
+
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << "Element " << i + 1 << "." << j + 1 << ": ";
+			cin >> x;
+			A[i][j] = x;
+		}
+		cout << endl;
+	}
+
+	cout << "Your 2D array: " << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << A[i][j];
+			cout << "\t";
+		}
+		cout << endl;
+	}
+	for (int i = 0; i < size; i++) {
+		A[i][size - (i + 1)] = 0;
+	}
+	cout << "Changed array: " << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			A[i][j] *= A[i][j];
+			cout << A[i][j];
+			cout << "\t";
+		}
+		cout << endl;
+	}
+}

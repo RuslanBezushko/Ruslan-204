@@ -1,0 +1,26 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+int main()
+{
+	double x;
+	double y;
+
+	cout << "Enter x:" << endl;
+	cin >> x ;
+	cout << "Enter y:" << endl;
+	cin >> y;
+	if (x >= 0 && y >= 0)
+	{
+		if ((pow(x,2)+ pow(y,2) >= 0.25) && (pow(x, 2) + pow(y, 2) <= 1))
+		{
+			cout << "You hit";
+		}
+		else
+		{
+			cout << "You did not hit";
+		}
+	}
+}

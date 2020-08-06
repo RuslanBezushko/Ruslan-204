@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+
+#define COUNTRY_COUNT 3
+
+using namespace std;
+
+struct Country
+{
+	string name;
+	string capital;
+	unsigned int count;
+	unsigned int area;
+	bool waterBorder;
+};
+
+int main()
+{
+	Country* countries = new Country[COUNTRY_COUNT];
+	int i;
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		cout << "Enter country name:" << endl;
+		getline(cin, countries[i].name);
+		cout << "Enter capital name:" << endl;
+		getline(cin, countries[i].capital);
+		cout << "Enter count" << endl;
+		cin >> countries[i].count;
+		cout << "Enter area size" << endl;
+		cin >> countries[i].area;
+		cout << "waterBorder y/n?" << endl;
+		char waterBorder;
+		cin >> waterBorder;
+		getchar();
+		if (waterBorder == 'y')
+			countries[i].waterBorder = true;
+		else countries[i].waterBorder = false;
+	}
+
+	cout << "Enter population" << endl;
+	int population;
+	int counter = 0;
+	int max = 0;
+	cin >> population;
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		if (countries[i].count > population)
+		{
+			counter++;
+		}
+	}
+	cout << "The number of countries whose population exceeds a given value: " << counter << endl;
+	for (i = 0; i < COUNTRY_COUNT; i++)
+	{
+		if (countries[i].waterBorder && countries[i].count > max)
+		{
+			max = countries[i].count;
+		}
+	}
+	cout << "The maximum population among the states that have a sea border: " << max << endl;
+}

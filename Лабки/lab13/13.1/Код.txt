@@ -1,0 +1,22 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <math.h>
+
+using namespace std;
+
+int main()
+{
+	int numbers[3];
+	cin >> numbers[0] >> numbers[1] >> numbers[2];
+	ofstream file("file.txt", ofstream::ate);
+	file << to_string(numbers[0]) << ' ' << to_string(numbers[1]) << ' ' << to_string(numbers[2]) << endl;
+	if (numbers[0] + numbers[1] <= (int)pow(numbers[2], 2) &&
+		numbers[1] + numbers[2] <= (int)pow(numbers[0], 2) &&
+		numbers[0] + numbers[2] <= (int)pow(numbers[1], 2))
+	{
+		file << "yes" << endl;
+	}
+	else file << "no" << endl;
+	return 0;
+}
